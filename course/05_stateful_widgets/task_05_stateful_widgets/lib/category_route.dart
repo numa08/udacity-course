@@ -16,11 +16,15 @@ final _backgroundColor = Colors.green[100];
 ///
 /// While it is named CategoryRoute, a more apt name would be CategoryScreen,
 /// because it is responsible for the UI at the route's destination.
-// TODO: Make CategoryRoute a StatefulWidget
-class CategoryRoute extends StatelessWidget {
+class CategoryRoute extends StatefulWidget {
   const CategoryRoute();
 
-  // TODO: Create State object for the CategoryRoute
+  @override
+  State<StatefulWidget> createState() => _CategoryRouteState();
+}
+
+class _CategoryRouteState extends State<CategoryRoute> {
+  final _categories = <Category>[];
 
   static const _categoryNames = <String>[
     'Length',
@@ -66,16 +70,10 @@ class CategoryRoute extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // TODO: Instead of re-creating a list of Categories in every build(),
-    // save this as a variable inside the State object and create
-    // the list at initialization (in initState()).
-    // This way, you also don't have to pass in the list of categories to
-    // _buildCategoryWidgets()
-    final categories = <Category>[];
-
+  void initState() {
+    super.initState();
     for (var i = 0; i < _categoryNames.length; i++) {
-      categories.add(Category(
+      _categories.add(Category(
         name: _categoryNames[i],
         color: _baseColors[i],
         iconLocation: Icons.cake,
@@ -83,10 +81,19 @@ class CategoryRoute extends StatelessWidget {
       ));
     }
 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // save this as a variable inside the State object and create
+    // the list at initialization (in initState()).
+    // This way, you also don't have to pass in the list of categories to
+    // _buildCategoryWidgets()
+
     final listView = Container(
       color: _backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: _buildCategoryWidgets(categories),
+      child: _buildCategoryWidgets(_categories),
     );
 
     final appBar = AppBar(
@@ -108,3 +115,4 @@ class CategoryRoute extends StatelessWidget {
     );
   }
 }
+
